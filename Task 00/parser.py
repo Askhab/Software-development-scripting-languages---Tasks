@@ -3,11 +3,35 @@ from bs4 import BeautifulSoup
 
 # указывает начальный адрес для поиска статей
 url = "https://www.nytimes.com/section/politics"
-response = requests.get(url).text
 
-data = BeautifulSoup(response, "html.parser")
+# функция для сбора новостей
+def collect_news():
+    # делаем запрос в начальному адресу извлекая его текстовые данные
+    response = requests.get(url).text
+    # обрабатываем полученный текст
+    data = BeautifulSoup(response, "html.parser")
+    # список для статей с ключевыми словами
+    news = []
+    articles = data.find_all("article")
 
-for article in data.find_all("div", class_ = "css-dde3aw"):
-    title = article.p.a.text
-    link = "https://www.nytimes.com" + article.a["href"]
-    print(title, link)
+    # цикл для поиска по найденным статьям
+    for article in articles:
+        # заголовок статьи
+        title = article.find("h3", class_ = "css-1j88qqx e15t083i0")
+        # краткое описание
+        description = article.find("p", class_ = "css-1pga48a e15t083i1")
+        # автор статьи
+        author = article.find("span", class_ = "css-1n7hynb")
+
+        # если Заголовок и Краткое описание - не пустые, то-есть True
+        if title and description:
+            # "извлекаем" строки из html-разметки
+            # параметр strip = True для удаления пробелов в начале и конце извлекаемых строк
+            title_text = title.get_text(strip = True)
+            description_text = description.get_text(strip = True)
+            author_text = author.get_text(strip = True)
+
+            print(title_text, description_text, author_text)
+
+
+collect_news()
