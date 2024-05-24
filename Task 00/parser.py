@@ -4,6 +4,9 @@ from bs4 import BeautifulSoup
 # указывает начальный адрес для поиска статей
 url = "https://www.nytimes.com/section/politics"
 
+# указываем ключевые слова для поиска в статьях
+keywords = ["Trump", "Biden"]
+
 # функция для сбора новостей
 def collect_news():
     # делаем запрос в начальному адресу извлекая его текстовые данные
@@ -31,7 +34,11 @@ def collect_news():
             description_text = description.get_text(strip = True)
             author_text = author.get_text(strip = True)
 
-            print(title_text, description_text, author_text)
+            for keyword in keywords:
+                if keyword in title_text:
+                    news.append((title_text, description_text, author_text))
+
+    print(news)
 
 
 collect_news()
