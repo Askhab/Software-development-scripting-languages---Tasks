@@ -59,7 +59,7 @@ def main():
 
     # цикл для записи статей в лог и добавления их в список уже найденных
     while start_time < end_time:
-        logging.info(f"Новые статьи на сайте New york Times с ключевыми словами: {keywords[0]} и {keywords[1]}")
+        logging.info(f"\n\tНовые статьи на сайте New york Times с ключевыми словами: {keywords[0]} и {keywords[1]}\n")
         news = collect_news()
 
         for title, description, author in news:
